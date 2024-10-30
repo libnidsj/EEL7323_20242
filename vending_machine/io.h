@@ -5,13 +5,14 @@
 
 class io{
 		vendingMachine vendingIO;
+		bool clockButton;
 		bool M025;
 		bool M050;
 		bool M100;
 		bool DEV;
 		bool MEET;
 		bool ETIRPS;
-		
+				
 		int devolutionState;
 		bool releaseMEET;
 		bool releaseETIRPS;

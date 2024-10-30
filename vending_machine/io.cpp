@@ -1,10 +1,12 @@
 #include "io.h"
 #include <iostream>
+#include <stdio.h>
 
 using namespace std;
 
 io::io(vendingMachine innerMachine) {
 	vendingIO = innerMachine;
+	clockButton = 0;
 	M025 = 0;
 	M050 = 0;
 	M100 = 0;
@@ -28,15 +30,34 @@ void io::sendSignals(){
 }
 
 void io::getSignals(){
-	/*	
-	M025 = (*data & 0x00000001);
-	M050 = (*data & 0x00000002);
-	M100 = (*data & 0x00000004);
-	DEV = (*data & 0x00000008);
-	MEET = (*data & 0x00000010);
-	ETIRPS = (*data & 0x00000020);
-	*/
 	
+	// 2^16 -> btn0
+	// 2^17 -> btn1
+	// ...
+
+	// 2^8 -> SW0
+	// 2^9 -> SW1
+	// ...	
+		
+	M025 = (*data >> 8);
+	M050 = (*data >> 9);
+	M100 = (*data >> 10);
+	DEV = (*data >> 11);
+	MEET = (*data >> 12);
+	ETIRPS = (*data >> 13);
+	clockButton = (*data >> 16);
+	
+	if(clockButton == 1) {
+		clockButton = (*data >> 16);
+		while(clockButton == 1) {	// Break to not double click
+			// DO NOTHING
+		}
+	}
+	
+	*direction = 0xffffffff;
+	output = 0;
+	
+	/*
 	cout << "Insira M025 1 ou 0: ";
 	cin >> M025;
 	cout << "Insira M050 1 ou 0: ";
@@ -49,11 +70,12 @@ void io::getSignals(){
 	cin >> MEET;
 	cout << "Insira ETIRPS 1 ou 0: ";
 	cin >> ETIRPS;
+	*/
 }
 
 void io::sendOutput(){
 
-	// *direction = 0xffffffff;
+	*direction = 0xffffffff;
 	
 	int ledMatrix = 0;
 	
@@ -102,7 +124,7 @@ void io::sendOutput(){
 		cout << "Entregando ETIRPS \n";
 	}
 	
-	// *output = ledMatrix;
+	*output = ledMatrix;
 	
 }
 
@@ -112,4 +134,6 @@ void io::run(){
 	vendingIO.stateMachineRun();
 	getActualOutput();
 	sendOutput();
+
+	// cout << "M025: " << M025 << " M050: " << M050 << " M100: " << M100 << "\n";
 }

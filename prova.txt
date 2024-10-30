@@ -1,0 +1,24 @@
+Prova C++ Prática
+
+---------------------------------------
+
+Vending machine
+
+Display OLED
+
+Classe abstrata de IO -> desktop (cin)
+						 LEON3 (botões)
+						 
+Fila (Lista Encadeada) -> Armazenar log de compras (refri, data/hora)
+
+Classe clock/calendar -> mostrar hora -> desktop (cout)
+										 LEON3 (oled)
+										 
+---------------------------------------										 
+
+Teórica
+
+Perguntas sobre implementação da vending machine e ensinamentos da disciplina
+
+Pode criar cola
+
